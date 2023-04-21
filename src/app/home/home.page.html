@@ -1,0 +1,67 @@
+<ion-content class="auth-form">
+
+<div class="header">
+    <img src="assets/spotAhome.png" width=150 id="logo">
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      <img src="assets/user2.png">
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li><button class="dropdown-item" [routerLink]="['/login']">Login</button></li>
+      <li><button class="dropdown-item" [routerLink]="['/registration']">Register</button></li>
+      <li><button class="dropdown-item" [routerLink]="['/admin']">Admin</button></li>
+      <li><button class="dropdown-item" (click)="authService.SignOut()">Logout</button></li>
+      <li><button class="dropdown-item" [routerLink]="['/test']">Test</button></li>
+      <li class="owner">
+      <button class="dropdown-item" [routerLink]="['/owner-panel']">owner-panel</button></li>
+    </ul>
+  </div>
+</div>
+
+<div>
+  <ion-slides [options]="slideOpts">
+    <ion-slide>
+          <img src="assets/1.jpg" alt=”slide-1”/>
+    </ion-slide>
+    <ion-slide>
+          <img src="assets/2.jpg" alt=”slide-2” />
+    </ion-slide>
+    <ion-slide>
+          <img src="assets/3.jpg" alt=”slide-3” />
+    </ion-slide>
+  </ion-slides>
+
+</div>
+
+<ion-item id="filter">
+  <ion-select interface="popover" placeholder="Select Place" [(ngModel)]="address" (ionChange)="getAd(address)">
+    <ion-select-option [value]="null"></ion-select-option>
+    <ion-select-option *ngFor="let ad of filterPlace" [value]="ad">{{ad}}</ion-select-option>
+  </ion-select>
+</ion-item>
+<ion-item id="filter">
+  <ion-select interface="popover" placeholder="Select Rent" [(ngModel)]="rent" (ionChange)="getRe(rent)">
+    <ion-select-option [value]="null"></ion-select-option>
+    <ion-select-option *ngFor="let re of filterRent" [value]="re">{{re}}</ion-select-option>
+  </ion-select>
+</ion-item>
+<ion-item id="filter1">
+    <div>₱{{price.lower}} - ₱{{price.upper}}</div>
+  <ion-range [dualKnobs]="true" [min]="0" [max]="priceMax" [(ngModel)]="price"
+    (ionChange)="filterPrice()"></ion-range>
+</ion-item>
+
+<div class="body">
+      <div *ngFor="let item of list | async" class="room">
+        <div type="button" [routerLink]="['/','room',item.id]">
+          <img src="assets/sample1.webp" width = 275>
+      <div id="na" value="na">{{item.Name}}</div>
+      <div id="pr" value="pr">{{item.Price}}</div>
+      <div id="ad" value="ad">{{item.Address}}</div>
+      <div id="re" value="re">{{item.Rent}}</div>
+        </div>
+      </div>
+    </div>
+</ion-content>

@@ -1,0 +1,134 @@
+<ion-content>
+  <div class="header">
+    <img src="assets/spotAhome.png" width=150 id="logo">
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      <img src="assets/user2.png">
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      <li><button class="dropdown-item" [routerLink]="['/login']">Login</button></li>
+      <li><button class="dropdown-item" (click)="authService.SignOut()">Logout</button></li>
+      <li><button class="dropdown-item" [routerLink]="['/test']">Test</button></li>
+    </ul>
+  </div>
+</div>
+<div class="label">
+  <div id="name">{{data.Name}}</div>
+  <div id="place">{{data.Address}}</div>
+</div>
+
+<div class="body">
+
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/1.jpg" class="d-block w-100" alt="..." id="myImg">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/1.jpg" class="d-block w-100" alt="..." id="myImg">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/1.jpg" class="d-block w-100" alt="..." id="myImg">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+
+    <div id="myModal" class="modal">
+
+      <!-- The Close Button -->
+      <span class="close">&times;</span>
+
+      <!-- Modal Content (The Image) -->
+      <img class="modal-content" id="img01">
+
+      <!-- Modal Caption (Image Text) -->
+      <div id="caption"></div>
+    </div>
+  </div>
+
+
+<div class="desc">
+  <div class="button">
+    <div type="button"
+            onclick="document.getElementById('detail').style.display='block';
+            document.getElementById('map').style.display='none';
+            document.getElementById('review').style.display='none'" id="d"><span>Detail</span></div>
+    <div type="button"
+            onclick="document.getElementById('detail').style.display='none';
+            document.getElementById('map').style.display='block';
+            document.getElementById('review').style.display='none'"><span>Map</span></div>
+    <div type="button"
+            onclick="document.getElementById('detail').style.display='none';
+            document.getElementById('map').style.display='none';
+            document.getElementById('review').style.display='block'"><span>Review</span></div>
+  </div>
+
+  <div class="content">
+    <div>
+      <div id="detail" style="display: block;">{{data.Detail}}</div>
+      <div id="map" style="display: none;">bbbbbbbbbb</div>
+      <div id="review" style="display: none;">
+        <ion-item>
+          <ion-label>
+            <h2>John Doe</h2>
+            <p>Great product!</p>
+              <ion-icon [name]="starIcon(1)" (click)="setRating(1)"></ion-icon>
+              <ion-icon [name]="starIcon(2)" (click)="setRating(2)"></ion-icon>
+              <ion-icon [name]="starIcon(3)" (click)="setRating(3)"></ion-icon>
+              <ion-icon [name]="starIcon(4)" (click)="setRating(4)"></ion-icon>
+              <ion-icon [name]="starIcon(5)" (click)="setRating(5)"></ion-icon>
+          </ion-label>
+          <ion-label>
+            <h2>John Doe</h2>
+            <p>Great product!</p>
+              <ion-icon [name]="starIcon(1)" (click)="setRating(1)"></ion-icon>
+              <ion-icon [name]="starIcon(2)" (click)="setRating(2)"></ion-icon>
+              <ion-icon [name]="starIcon(3)" (click)="setRating(3)"></ion-icon>
+              <ion-icon [name]="starIcon(4)" (click)="setRating(4)"></ion-icon>
+              <ion-icon [name]="starIcon(5)" (click)="setRating(5)"></ion-icon>
+          </ion-label>
+          <ion-label>
+            <h2>John Doe</h2>
+            <p>Great product!</p>
+              <ion-icon [name]="starIcon(1)" (click)="setRating(1)"></ion-icon>
+              <ion-icon [name]="starIcon(2)" (click)="setRating(2)"></ion-icon>
+              <ion-icon [name]="starIcon(3)" (click)="setRating(3)"></ion-icon>
+              <ion-icon [name]="starIcon(4)" (click)="setRating(4)"></ion-icon>
+              <ion-icon [name]="starIcon(5)" (click)="setRating(5)"></ion-icon>
+          </ion-label>
+        </ion-item>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div class="price">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4" *ngFor="let seat of seats" (click)="selectSeat(seat)" [class.occupied]="seat.Occupied">
+            <ion-button class="seat-number">{{ seat.BedSpace }}</ion-button>
+            <ion-button class="seat-status">{{ seat.Occupied ? 'Occupied' : 'Available' }}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div id="pr">
+      <div id="p">
+       ₱{{data.Price}}
+      </div>
+      <p>Monthly</p>
+      <button id="priceBtn" (click)="reserveBedspace()">Reserve</button>
+    </div>
+  </div>
+
+</div>
+</ion-content>

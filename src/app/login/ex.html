@@ -1,0 +1,49 @@
+<ion-content class="body">
+  <div class="design">
+    </div>
+
+  <div class="login">
+  <h1>WELCOME</h1>
+    <div id="login2">
+  <ion-item lines="full">
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="text" #email required></ion-input>
+  </ion-item>
+  <ion-item lines="full">
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" #password required></ion-input>
+  </ion-item>
+  <ion-row>
+    <ion-col>
+      <ion-button type="submit" (click)="logIn(email, password)" expand="block"
+        >Login</ion-button
+      >
+    </ion-col>
+  </ion-row>
+  <ion-row class="gLogin">
+    <ion-col>
+      <ion-button
+        type="submit"
+        color="white"
+        (click)="authService.GoogleAuth()"
+        expand="block"
+      >
+        <img src="assets/google.png"> Login with Google
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button
+        expand="block"
+        color="warning"
+        [routerLink]="['/password-reset']"
+      >
+        Password Reset
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <p>Don't have an account yet? <a [routerLink]="['/registration']">Register</a></p>
+  </div>
+</div>
+</ion-content>

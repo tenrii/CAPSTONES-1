@@ -1,0 +1,101 @@
+<ion-content>
+  <div class="body">
+  <div class="nav">
+      <div type="button" onclick="document.getElementById('tenant').style.display='block'
+      document.getElementById('owner').style.display='none'"><span>Tenant</span></div>
+      <div type="button" onclick="document.getElementById('tenant').style.display='none'
+      document.getElementById('owner').style.display='block'"><span>Owner</span></div>
+  </div>
+  <div class="list" >
+    <div id="tenant" style="display: block">
+      <h2>Tenant List</h2>
+  <ion-card *ngFor="let item of tenantList" color="primary">
+      <ion-card-header>
+        <ion-card-title>First Name: {{item.FName}}</ion-card-title>
+        <ion-card-subtitle>Last Name: {{item.LName}}</ion-card-subtitle>
+        <ion-card-subtitle>Age: {{item.Age}}</ion-card-subtitle>
+        <ion-card-subtitle>Address: {{item.Address}}</ion-card-subtitle>
+      </ion-card-header>
+  </ion-card>
+</div>
+
+<div id="owner" style="display: none">
+  <h2>Owner List</h2>
+<ion-card *ngFor="let owner of ownerList" color="primary">
+  <span *ngIf="!owner.isEdit; else elseBlock">
+  <ion-card-header>
+    <ion-card-title>First Name: {{owner.FName}}</ion-card-title>
+    <ion-card-subtitle>Last Name: {{owner.LName}}</ion-card-subtitle>
+    <ion-card-subtitle>Age: {{owner.Age}}</ion-card-subtitle>
+    <ion-card-subtitle>Address: {{owner.Address}}</ion-card-subtitle>
+    <ion-card-subtitle>Permited: {{owner.isPermited}}</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button shape="round" color="secondary" size="small" (click)="EditRecord(owner)">
+      <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+
+    </ion-button>
+    <ion-button shape="round" color="danger" size="small" (click)="RemoveRecord(owner.id)">
+      <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+
+    </ion-button>
+  </ion-card-content>
+</span>
+<ng-template #elseBlock>
+  <ion-card-header>
+    <ion-card-title>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            Edit
+          </ion-col>
+          <ion-col>
+            <ion-button fill="solid" color="medium" size="small" (click)="owner.isEdit = false">
+              Cancel
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button fill="solid" color="success" size="small" (click)="UpdateRecord(owner)">
+              Update
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label><strong>First Name</strong></ion-label>
+      <ion-input type="text" [(ngModel)]="owner.EditFName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Last Name</strong></ion-label>
+      <ion-input type="text" [(ngModel)]="owner.EditLName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Age</strong></ion-label>
+      <ion-input type="text" [(ngModel)]="owner.EditAge"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label><strong>Address</strong></ion-label>
+      <ion-input type="text" [(ngModel)]="owner.EditAddress"></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="owner.EditisPermited">
+        <ion-item>
+          <ion-label>Permited</ion-label>
+          <ion-radio slot="end" value="true"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Not Permited</ion-label>
+          <ion-radio slot="end" value="false"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ion-card-content>
+</ng-template>
+</ion-card>
+</div>
+</div>
+</div>
+</ion-content>

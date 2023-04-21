@@ -1,0 +1,246 @@
+
+.header{
+  margin-bottom: 10px;
+  border-bottom: solid rgb(172, 172, 172) 1px;
+}
+
+.header .dropdown{
+  position: relative;
+  bottom: 10px;
+  right: 50px;
+  float: right;
+	padding-top: 30px;
+	padding-right: 20px;
+}
+
+.header #logo{
+  position: relative;
+  left: 30px;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
+.header .dropdown #dropdownMenu2{
+	background-color: rgb(194, 123, 17);
+}
+
+.header .dropdown img{
+	height: 30px;
+	border-radius: 50%;
+}
+
+.label{
+  margin-left: 60px;
+}
+
+.label #name{
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.label #place{
+  font-size: 15px;
+}
+
+#carouselExampleControls{
+  margin-left: 60px;
+  width: 60%;
+}
+
+#carouselExampleControls img{
+  border-radius: 4px;
+}
+
+.price{
+ position: sticky;
+ float: right;
+ bottom: 110px;
+ min-width: 25%;
+ margin-right: 65px;
+ border: 1px inset rgb(0, 0, 0);
+ max-width: 370px;
+ max-height: 500px;
+ height: 500px;
+ box-shadow: 3px 4px #adadad;
+ border-radius: 25px 0px 25px 0px;
+}
+
+.price ion-col{
+  width: 40px;
+}
+
+.price #pr{
+  text-align: center;
+}
+
+.price #pr ion-select{
+  margin-left: 15px;
+  margin-top: 15px;
+  width: 100px;
+  min-width: 100px;
+  border: 1px black solid;
+}
+
+.price #pr #p{
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.price #pr #priceBtn{
+  background-color: rgb(194, 123, 17);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 250px;
+}
+
+.desc{
+  margin-top: 5px;
+  margin-left: 65px;
+}
+
+.desc .button{
+  border-radius: 15px 15px 0px 0px;
+  width: 62%;
+  border: 2px solid rgb(0, 0, 0);
+  margin-bottom: 2px;
+}
+
+.desc .button #d{
+  margin-left: 10px;
+}
+
+.desc .button div{
+  border-right: 2px solid rgb(0, 0, 0);
+  margin-right: 10px;
+  margin-left: 5px;
+  padding-right: 10px;
+  display: inline-block;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.desc .button div span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.desc .button div span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.desc .button div:hover span {
+  padding-right: 25px;
+}
+
+.desc .button div:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.desc .content{
+  box-shadow: 3px 4px #adadad;
+  border-radius: 0px 0px 25px 25px;
+  width: 62%;
+  border:  2px solid rgb(0, 0, 0);
+}
+
+.desc .content div{
+  height: 350px;
+}
+
+///////////////////////
+
+#myImg {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.9;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.occupied {
+  opacity: 0.5;
+}
+
+.seat-status{
+  display: none;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+

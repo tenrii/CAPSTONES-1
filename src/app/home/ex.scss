@@ -1,0 +1,63 @@
+html {
+  font-size: 62.5%;
+}
+.main-heading {
+  opacity: 1;
+  position: absolute;
+  width: 50%;
+  font-size: 3rem;
+  z-index: 100;
+  top: 2em;
+  left: 2em;
+  color: #FFFFFF;
+}
+/* BG SLIDESHOW CSS */
+.slideshow,
+.slideshow::after {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 0px;
+}
+.slideshow::after {
+  content: '';
+  background: linear-gradient(-70deg, rgba(0,0,0,0), rgba(0,0,0,1));
+}
+.img-bg-slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: transparent; /*hides span's text*/
+  background-size: cover; /* covers whole viewport */
+  background-position: 100% 100%;
+  background-repeat: none;
+  opacity: 0;
+  z-index: 0;
+  animation: backgroundSlideshow 60s linear infinite 0s;
+}
+.slideshow li:nth-child(1) .img-bg-slide {
+   background-image: url('https://i.imgur.com/8TrVYTS.jpg');
+}
+.slideshow li:nth-child(2) .img-bg-slide { 
+    background-image: url('https://i.imgur.com/DDa43Fn.jpg');
+    animation-delay: 15s; 
+}
+.slideshow li:nth-child(3) .img-bg-slide { 
+    background-image: url('https://i.imgur.com/KxOhxyk.jpg');
+    animation-delay: 30s; 
+}
+.slideshow li:nth-child(4) .img-bg-slide { 
+    background-image: url('https://i.imgur.com/R0jp6Br.jpg');
+    animation-delay: 45s; 
+}
+@keyframes backgroundSlideshow {
+  0% { opacity: 0;}
+  12.5% { opacity: 1;}
+  25% { opacity: 1;}
+  37.5% { opacity: 0;}
+  100% { opacity: 0;} 
+}

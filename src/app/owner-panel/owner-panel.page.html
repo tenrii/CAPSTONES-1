@@ -1,0 +1,109 @@
+<ion-content>
+  <div>
+
+<button class="create" id="btnCreate"
+onclick="document.getElementById('modalCreate').style.display = 'block';">Create Room
+</button>
+
+</div>
+
+<div class="modal" id="modalCreate">
+  <div class="C-content">
+  <span class="close"
+    onclick="document.getElementById('modalCreate').style.display = 'none';">&times;
+  </span>
+<h2>Create a Room</h2>
+  <form [formGroup]="roomForm" (ngSubmit)="CreateRecord()">
+
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input formControlName="Name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Price</ion-label>
+      <ion-input formControlName="Price"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Address</ion-label>
+      <ion-input formControlName="Address"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Number of Bedspace</ion-label>
+      <ion-input formControlName="NumBedSpace"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Detail</ion-label>
+      <ion-input formControlName="Detail"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-button (click)="CreateRecord()" [disabled]="roomForm.invalid">
+        <ion-icon size="small" slot="icon-only" name="add"></ion-icon>
+        &nbsp;Create Record
+      </ion-button>
+    </ion-item>
+
+  </form>
+
+  </div>
+</div>
+
+
+  <div class="body">
+    <div *ngFor="let item of roomList" class="room">
+        <img src="assets/sample1.webp" width = 275>
+    <div id="na" value="na">{{item.Name}}</div>
+    <div id="pr" value="pr">{{item.Price}}</div>
+    <div id="ad" value="ad">{{item.Address}}</div>
+    <div id="nbs" value="nbs">{{item.NumBedSpace}}</div>
+    <div id="re" value="re">{{item.Detail}}</div>
+    <ion-button (click)="EditRecord(item)"
+    onclick="document.getElementById('modalEdit').style.display = 'block';">Edit</ion-button>
+    <ion-button onclick="document.getElementById('modalCreate').style.display = 'block';">Delete</ion-button>
+
+    <div class="modal" id="modalEdit">
+    <div class="C-content">
+      <span class="close"
+      onclick="document.getElementById('modalEdit').style.display = 'none';
+      item.isEdit = false">&times;
+    </span>
+
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="item.EditName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Price</ion-label>
+      <ion-input type="text" [(ngModel)]="item.EditPrice"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Address</ion-label>
+      <ion-input type="text" [(ngModel)]="item.EditAddress"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Number of Bedspace</ion-label>
+      <ion-input type="text" [(ngModel)]="item.EditNumBedSpace"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Detail</ion-label>
+      <ion-input type="text" [(ngModel)]="item.EditDetail"></ion-input>
+    </ion-item>
+
+
+    <button (click)="UpdateRecord(item)">Update</button>
+
+    </div>
+</div>
+
+</div>
+</div>
+
+</ion-content>
