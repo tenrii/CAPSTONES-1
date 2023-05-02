@@ -1,0 +1,105 @@
+<div class="body">
+  <div class="nav">
+      <div type="button" onclick="document.getElementById('tenant').style.display='block'
+    document.getElementById('owner').style.display='none'"><span>Tenant</span></div>
+      <div type="button" onclick="document.getElementById('tenant').style.display='none'
+    document.getElementById('owner').style.display='block'"><span>Owner</span></div>
+  </div>
+  <div type="button" onclick="document.getElementById('tenant').style.display='none'
+    document.getElementById('owner').style.display='none'
+    document.getElementById('pending').style.display='block'"><span>pending</span></div>
+  </div>
+  <div class="list">
+      <div id="tenant" style="display: block">
+          <h2>Tenant List</h2>
+          <ion-card *ngFor="let item of tenantList" color="primary">
+              <ion-card-header>
+                  <ion-card-title>First Name: {{item.FName}}</ion-card-title>
+                  <ion-card-subtitle>Last Name: {{item.LName}}</ion-card-subtitle>
+                  <ion-card-subtitle>Age: {{item.Age}}</ion-card-subtitle>
+                  <ion-card-subtitle>Address: {{item.Address}}</ion-card-subtitle>
+              </ion-card-header>
+          </ion-card>
+      </div>
+
+      <div id="owner" style="display: none">
+          <h2>Owner List</h2>
+          <ion-card *ngFor="let owner of ownerList" color="primary">
+              <ion-card-header>
+                  <ion-card-title>First Name: {{owner.FName}}</ion-card-title>
+                  <ion-card-subtitle>Last Name: {{owner.LName}}</ion-card-subtitle>
+                  <ion-card-subtitle>Age: {{owner.Age}}</ion-card-subtitle>
+                  <ion-card-subtitle>Address: {{owner.Address}}</ion-card-subtitle>
+                  <ion-card-subtitle>Permited: {{owner.isPermited}}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                  <ion-button shape="round" color="secondary" size="small" (click)="EditRecord(owner)">
+                      <ion-icon size="small" slot="icon-only" name="create"></ion-icon>
+
+                  </ion-button>
+                  <ion-button shape="round" color="danger" size="small" (click)="RemoveRecord(owner.id)">
+                      <ion-icon size="small" slot="icon-only" name="trash"></ion-icon>
+
+                  </ion-button>
+              </ion-card-content>
+              ////
+              <ion-content>
+                <div class="body">
+                  <div class="nav">
+                    <div type="button" onclick="document.getElementById('pending').style.display='block'
+                        document.getElementById('owner').style.display='none'
+                        document.getElementById('tenant').style.display='none'"><span>Pending</span></div>
+                    <div type="button" onclick="document.getElementById('pending').style.display='none'
+                        document.getElementById('owner').style.display='block'
+                        document.getElementById('tenant').style.display='none'"><span>Owner</span></div>
+                    <div type="button" onclick="document.getElementById('pending').style.display='none'
+                        document.getElementById('owner').style.display='none'
+                        document.getElementById('tenant').style.display='block'"><span>Tenant</span></div>
+                  </div>
+
+                  <div class="list">
+                    <div id="pending" style="display: block">
+                      <h2>Pending List</h2>
+                      <ion-card *ngFor="let item of falselist | async" color="primary">
+                        <ion-card-header>
+                          <ion-card-title>First Name: {{item.FName}}</ion-card-title>
+                          <ion-card-subtitle>Last Name: {{item.LName}}</ion-card-subtitle>
+                          <ion-card-subtitle>Age: {{item.Age}}</ion-card-subtitle>
+                          <ion-card-subtitle>Address: {{item.Address}}</ion-card-subtitle>
+                        </ion-card-header>
+                        <ion-button shape="round" color="secondary" size="small" (click)="Approve(item.id)">
+                          Accepted
+                        </ion-button>
+                      </ion-card>
+                    </div>
+
+                    <div class="list">
+                      <div id="owner" style="display: none">
+                        <h2>Owner List</h2>
+                        <ion-card *ngFor="let item of truelist | async" color="primary">
+                          <ion-card-header>
+                            <ion-card-title>First Name: {{item.FName}}</ion-card-title>
+                            <ion-card-subtitle>Last Name: {{item.LName}}</ion-card-subtitle>
+                            <ion-card-subtitle>Age: {{item.Age}}</ion-card-subtitle>
+                            <ion-card-subtitle>Address: {{item.Address}}</ion-card-subtitle>
+                          </ion-card-header>
+                        </ion-card>
+                      </div>
+
+                      <div id="tenant" style="display: none">
+                        <h2>Tenant List</h2>
+                        <ion-card *ngFor="let owner of tenantList" color="primary">
+                          <ion-card-header>
+                            <ion-card-title>First Name: {{owner.FName}}</ion-card-title>
+                            <ion-card-subtitle>Last Name: {{owner.LName}}</ion-card-subtitle>
+                            <ion-card-subtitle>Age: {{owner.Age}}</ion-card-subtitle>
+                            <ion-card-subtitle>Address: {{owner.Address}}</ion-card-subtitle>
+                            <ion-card-subtitle>Permited: {{owner.isPermited}}</ion-card-subtitle>
+                          </ion-card-header>
+                        </ion-card>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ion-content>
+

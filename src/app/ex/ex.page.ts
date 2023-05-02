@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
+import { Chat, Message } from '../shared/chat';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
 
 @Component({
   selector: 'app-ex',
@@ -9,26 +10,27 @@ import { Observable } from 'rxjs';
   styleUrls: ['./ex.page.scss'],
 })
 export class ExPage implements OnInit {
+  @ViewChild(IonContent) content!: IonContent;
 
-  messagesRef!: AngularFireList<any>;
-  messages!: Observable<any[]>;
-  messageText!: string;
+  messages!: Observable<Message[]>;
+  newMsg = '';
 
-  constructor(private db: AngularFireDatabase) {
-  }
+  constructor(private chatService: Chat, private router: Router) {}
 
   ngOnInit() {
-    this.messagesRef = this.db.list('messages');
-    this.messages = this.messagesRef.valueChanges();
+    this.messages = this.chatService.getChatMessage();
   }
+
   sendMessage() {
-    if (this.messageText.trim() !== '') {
-      this.messagesRef.push({
-        text: this.messageText.trim(),
-        timestamp: Date.now()
-      });
-      this.messageText = '';
-    }
+    this.chatService.addChatMessage(this.newMsg, this.newMsg).then(() => {
+      this.newMsg = '';
+      this.content.scrollToBottom();
+    });
+  }
+
+  signOut() {
+    this.chatService.signOut().then(() => {
+      this.router.navigateByUrl('/', { replaceUrl: true });
+    });
   }
 }
-

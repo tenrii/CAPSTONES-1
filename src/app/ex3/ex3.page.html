@@ -1,0 +1,7 @@
+<ion-content>
+  <div *ngFor="let item of ownerList">
+    <div>{{item.FName}} {{item.LName}}</div>
+    <ion-button [routerLink]="['/','chatroom',item.id]">Chat Owner</ion-button>
+  </div>
+
+</ion-content>

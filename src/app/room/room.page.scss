@@ -233,6 +233,10 @@
   opacity: 0.5;
 }
 
+.occupant{
+  pointer-events: none;
+}
+
 .seat-status{
   display: none;
 }

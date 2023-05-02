@@ -1,0 +1,51 @@
+h1 {
+  text-align: center;
+}
+
+.modalbtn{
+  float: right;
+  background-color:black;
+  color:white;
+  padding: 15px;
+  font-size: 20px;
+}
+
+.modalbtnn{
+  background-color:black;
+  color:white;
+  padding: 15px;
+  font-size: 20px;
+}
+
+.image-upload-box {
+  display: inline-block;
+  width: 300px;
+  max-width: auto;
+  min-height: 300px;
+  max-height: auto;
+  border: 2px dashed #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plus-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  color: #666;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.image-preview {
+  display: block;
+  border: 2px dashed #ddd;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+}

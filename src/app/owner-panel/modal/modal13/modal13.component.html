@@ -1,0 +1,63 @@
+<ion-content>
+
+<div class="collumn1">
+<div class="title">
+  <div>{{data?.Title}}</div>
+</div>
+
+<div class="rent">
+  <div>{{data?.Rent}}</div>
+</div>
+
+<div class="roomtype">
+  <div>{{data?.RoomType}}</div>
+</div>
+
+<div class="price">
+  <div>{{data?.Price}}</div>
+</div>
+
+<div class="address">
+  <div>{{data?.Street}}{{data?.Barangay}}{{data?.City}}{{data?.Province}}{{data?.ZIP}}</div>
+</div>
+</div>
+
+<div class="collumn2">
+<div class="image">
+  <div *ngFor="let item of data?.Images"><img [src]="item"></div>
+</div>
+
+<div class="amenities">
+  <div *ngFor="let items of data?.Amenities">
+    <div>{{items}}</div>
+  </div>
+</div>
+
+<div class="bed">
+  <div *ngFor="let itemss of data?.Bed">
+    <div>B:{{itemss.id}} - Status:{{itemss.status}}</div>
+  </div>
+</div>
+</div>
+
+<div>
+<div class="detail">
+  <div>{{data?.Details}}</div>
+</div>
+</div>
+
+</ion-content>
+<ion-footer>
+  <button class="modalbtnn" (click)="back()">
+    Back
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg>
+</button>
+  <button class="modalbtn" (click)="gotoModal14()">
+    Next
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+  </svg>
+</button>
+</ion-footer>

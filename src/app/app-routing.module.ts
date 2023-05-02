@@ -1,6 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
+import {
+  canActivate,
+  redirectUnauthorizedTo,
+  redirectLoggedInTo,
+} from '@angular/fire/compat/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
+
+const redirectLoggedInToChat = () => redirectLoggedInTo(['/chat']);
 
 const routes: Routes = [
   {
@@ -11,29 +19,36 @@ const routes: Routes = [
 
   {
     path: 'registration',
-    loadChildren: () => import('./registration/registration.module').then((m) => m.RegistrationPageModule
+    loadChildren: () =>
+      import('./registration/registration.module').then(
+        (m) => m.RegistrationPageModule
       ),
   },
 
   {
     path: 'verify-email',
-    loadChildren: () => import('./verify-email/verify-email.module').then((m) => m.VerifyEmailPageModule
+    loadChildren: () =>
+      import('./verify-email/verify-email.module').then(
+        (m) => m.VerifyEmailPageModule
       ),
   },
 
   {
     path: 'login',
-    loadChildren: () => import ('./login/login.module').then((m) => m.LoginPageModule),
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
   },
 
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardPageModule),
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then((m) => m.DashboardPageModule),
   },
 
   {
     path: 'password-reset',
-    loadChildren: () => import('./password-reset/password-reset.module').then(
+    loadChildren: () =>
+      import('./password-reset/password-reset.module').then(
         (m) => m.PasswordResetPageModule
       ),
   },
@@ -63,27 +78,68 @@ const routes: Routes = [
   },
   {
     path: 'owner-panel',
-    loadChildren: () => import('./owner-panel/owner-panel.module').then( m => m.OwnerPanelPageModule)
+    loadChildren: () =>
+      import('./owner-panel/owner-panel.module').then(
+        (m) => m.OwnerPanelPageModule
+      ),
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminPageModule),
   },
   {
     path: 'dashboard2',
-    loadChildren: () => import('./dashboard2/dashboard2.module').then( m => m.Dashboard2PageModule)
+    loadChildren: () =>
+      import('./dashboard2/dashboard2.module').then(
+        (m) => m.Dashboard2PageModule
+      ),
   },
   {
     path: 'verify-email2',
-    loadChildren: () => import('./verify-email2/verify-email2.module').then( m => m.VerifyEmail2PageModule)
+    loadChildren: () =>
+      import('./verify-email2/verify-email2.module').then(
+        (m) => m.VerifyEmail2PageModule
+      ),
   },
   {
     path: 'ex',
-    loadChildren: () => import('./ex/ex.module').then( m => m.ExPageModule)
+    loadChildren: () => import('./ex/ex.module').then((m) => m.ExPageModule),
+    ...canActivate(redirectUnauthorizedToLogin),
   },
   {
     path: 'ex2',
-    loadChildren: () => import('./ex2/ex2.module').then( m => m.Ex2PageModule)
+    loadChildren: () => import('./ex2/ex2.module').then((m) => m.Ex2PageModule),
+    ...canActivate(redirectLoggedInToChat),
+  },
+  {
+    path: 'ex3',
+    loadChildren: () => import('./ex3/ex3.module').then((m) => m.Ex3PageModule),
+  },
+  {
+    path: 'edit-room',
+    loadChildren: () =>
+      import('./edit-room/edit-room.module').then((m) => m.EditRoomPageModule),
+  },
+  {
+    path: 'edit-room/:id',
+    loadChildren: () =>
+      import('./edit-room/edit-room.module').then((m) => m.EditRoomPageModule),
+  },
+  {
+    path: 'chatroom',
+    loadChildren: () =>
+      import('./chatroom/chatroom.module').then((m) => m.ChatroomPageModule),
+  },
+  {
+    path: 'chatroom/:id',
+    loadChildren: () =>
+      import('./chatroom/chatroom.module').then((m) => m.ChatroomPageModule),
+  },
+  {
+    path: 'tab1',
+    loadChildren: () =>
+      import('./components/tab1/tab1.module').then((m) => m.Tab1PageModule),
   },
 ];
 

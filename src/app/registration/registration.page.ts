@@ -14,7 +14,7 @@ export class RegistrationPage implements OnInit {
   ) { }
   ngOnInit(){}
   signUpTenant(email: any, password: any ){
-    this.authService.RegisterUser(email.value, password.value)
+    this.authService.RegisterUserTenant(email.value, password.value)
     .then((res) => {
       // Do something here
       this.authService.SendVerificationMailT()
@@ -25,7 +25,7 @@ export class RegistrationPage implements OnInit {
 }
 
 signUpOwner(email: any, password: any ){
-  this.authService.RegisterUser(email.value, password.value)
+  this.authService.RegisterUserOwner(email.value, password.value)
   .then((res) => {
     // Do something here
     this.authService.SendVerificationMailO()
@@ -34,16 +34,19 @@ signUpOwner(email: any, password: any ){
     window.alert(error.message)
   })
 }
+
 SendVerificationMailT() {
   return this.ngFireAuth.auth.currentUser.sendEmailVerification()
   .then(() => {
     this.router.navigate(['verify-email']);
   })
 }
+
 SendVerificationMailO() {
   return this.ngFireAuth.auth.currentUser.sendEmailVerification()
   .then(() => {
     this.router.navigate(['verify-email']);
   })
 }
+
 }

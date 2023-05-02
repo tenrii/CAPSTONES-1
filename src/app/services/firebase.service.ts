@@ -2,7 +2,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { doc, getDocFromCache, getFirestore } from 'firebase/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
+export interface User {
+  uid: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +20,18 @@ export class FirebaseService {
   rooms: any = new BehaviorSubject([]);
   tenants: any = new BehaviorSubject([]);
   owners: any = new BehaviorSubject([]);
+  public loading: boolean = false;
+  currentUser!: User;
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(
+    private firestore: AngularFirestore,
+    private afAuth: AngularFireAuth
+  ) {
+    this.afAuth.onAuthStateChanged((user: any) => {
+      console.log('Change:', user);
+      this.currentUser = user;
+    });
+  }
 
   create_room(record: any) {
     console.log(record);
@@ -41,18 +57,25 @@ export class FirebaseService {
       .snapshotChanges()
       .pipe(
         map((a) => {
+          this.loading = true;
           const roomList = a.map((e) => {
             const localData: any = e.payload.doc.data();
             return {
               id: e.payload.doc.id,
               isEdit: false,
-              Name: localData.Name,
+              Rent: localData.Rent,
+              RoomType: localData.RoomType,
+              Street: localData.Street,
+              Barangay: localData.Barangay,
+              City: localData.City,
+              Province: localData.Province,
+              ZIP: localData.ZIP,
+              Bed: localData.Bed,
+              Amenities: localData.Amenities,
+              Images: localData.Images,
+              Title: localData.Title,
+              Details: localData.Details,
               Price: localData.Price,
-              Address: localData.Address,
-              NumBedSpace: localData.NumBedSpace,
-              Detail: localData.Detail,
-              BedSpaces: localData.BedSpaces,
-              Img: localData.Img,
             };
           });
           return roomList;
@@ -78,6 +101,7 @@ export class FirebaseService {
               LName: localData.LName,
               Age: localData.Age,
               Address: localData.Address,
+              Email: localData.Email,
             };
           });
           return tenantList;
@@ -94,6 +118,7 @@ export class FirebaseService {
       .snapshotChanges()
       .pipe(
         map((a) => {
+          this.loading = true;
           const ownerList = a.map((e) => {
             const localData: any = e.payload.doc.data();
             return {
@@ -104,7 +129,9 @@ export class FirebaseService {
               Age: localData.Age,
               Address: localData.Address,
               Email: localData.Email,
-              isPermited: localData.isPermited,
+              Accepted: localData.Accepted,
+              Phone: localData.Phone,
+              BusinessPermit: localData.BusinessPermit,
             };
           });
           return ownerList;
@@ -135,4 +162,7 @@ export class FirebaseService {
     return this.rooms.value.find((a: any) => a.id == room);
   }
 
+  getOwner(owner: any) {
+    return this.owners.value.find((a: any) => a.id == owner);
+  }
 }

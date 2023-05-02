@@ -1,5 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
+import { BehaviorSubject } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+interface OwnerData{
+FName: string;
+LName: string;
+Age: number;
+Address: string;
+Phone: string;
+BusinessPermit: string;
+Accepted: string;
+}
 
 @Component({
   selector: 'app-admin',
@@ -8,47 +20,53 @@ import { FirebaseService } from '../services/firebase.service';
 })
 export class AdminPage implements OnInit {
   tenantList!: any[];
+  ownerData: OwnerData;
   ownerList!: any[];
+  truelist: any = new BehaviorSubject([]);
+  falselist: any = new BehaviorSubject([]);
 
   constructor(
     private firebaseService: FirebaseService,
-
-    ) {}
+    private firestore: AngularFirestore
+  ) {this.ownerData = {} as OwnerData}
 
   ngOnInit() {
+
+    this.firebaseService.read_owner().subscribe((data) => {
+      this.ownerList = data;
+      this.filterF();
+      this.filterT();
+    });
+
     this.firebaseService.read_tenant().subscribe((data) => {
       this.tenantList = data;
       console.log('stud list', this.tenantList);
     });
 
-    this.firebaseService.read_owner().subscribe((data) => {
-      this.ownerList = data;
-      console.log('stud list', this.ownerList);
+
+
+  }
+
+  filterF() {
+    const filteredList = this.ownerList.filter((obj) => {
+      return 'false' === obj.Accepted || false === obj.Accepted;
     });
+
+    this.falselist.next(filteredList);
   }
 
-  RemoveRecord(rowID: any) {
-    this.firebaseService.delete_owner(rowID);
+  filterT() {
+    const filteredList = this.ownerList.filter((obj) => {
+      return 'true' === obj.Accepted || true === obj.Accepted;;
+    });
+    this.truelist.next(filteredList);
   }
 
-  EditRecord(record: any) {
-    record.isEdit = true;
-    record.EditFName = record.FName;
-    record.EditLName = record.LName;
-    record.EditAge = record.Age;
-    record.EditAddress = record.Address;
-    record.EditisPermited = record.isPermited;
+  Approve(a: any) {
+    this.firestore.collection('Owner').doc(a).update({ Accepted: true });
   }
 
-  UpdateRecord(recordRow: any) {
-    let record: any = {};
-    record['FName'] = recordRow.EditFName;
-    record['LName'] = recordRow.EditLName;
-    record['Age'] = recordRow.EditAge;
-    record['Address'] = recordRow.EditAddress;
-    record['isPermited'] = recordRow.EditisPermited;
-    this.firebaseService.update_owner(recordRow.id, record);
-    recordRow.isEdit = false;
+  Reject(a: any) {
+    this.firestore.collection('Owner').doc(a).update({ Accepted: false });
   }
-
 }

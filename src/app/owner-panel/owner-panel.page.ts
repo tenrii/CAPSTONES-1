@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { ImageService } from '../shared/chat';
+import { AnimationController, ModalController } from '@ionic/angular';
+import { CreateModalComponent } from './create-modal/create-modal.component';
+import { EditModalComponent } from './edit-modal/edit-modal.component';
+import { Modal1Component } from './modal/modal1/modal1.component';
 
 interface RoomData {
   Name: string;
@@ -23,17 +26,19 @@ export class OwnerPanelPage implements OnInit {
   roomData!: RoomData;
   roomForm!: FormGroup;
   nbs: any = 1;
+  isModalOpen = false;
 
   constructor(
+    private animationCtrl: AnimationController,
+    private m: ModalController,
     private af: AngularFireStorage,
     private firebaseService: FirebaseService,
-    public fb: FormBuilder,
+    public fb: FormBuilder
   ) {
     this.roomData = {} as RoomData;
-   }
+  }
 
   ngOnInit() {
-
     this.roomForm = this.fb.group({
       Name: ['', [Validators.required]],
       Price: ['', [Validators.required]],
@@ -46,44 +51,56 @@ export class OwnerPanelPage implements OnInit {
       this.roomList = data;
       console.log('stud list', this.roomList);
     });
-}
-
-CreateRecord() {
-  if (this.af !== null) {
-    this.firebaseService
-      .create_room(this.roomForm.value)
-      .then((resp) => {
-        //Reset form
-        this.roomForm.reset();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
+
+  CreateRecord() {
+    if (this.af !== null) {
+      this.firebaseService
+        .create_room(this.roomForm.value)
+        .then((resp) => {
+          //Reset form
+          this.roomForm.reset();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  RemoveRecord(rowID: any) {
+    this.firebaseService.delete_room(rowID);
+  }
+
+  async gotoModal1() {
+    const modalInstance = await this.m.create({
+      component: Modal1Component,
+      backdropDismiss: false,
+    });
+    this.isModalOpen = true;
+    return await modalInstance.present();
+  }
+
+async gotoModal() {
+    const modalInstance = await this.m.create({
+      component: CreateModalComponent,
+      backdropDismiss: false,
+    });
+    this.isModalOpen = true;
+    return await modalInstance.present();
 }
 
-RemoveRecord(rowID: any) {
-  this.firebaseService.delete_room(rowID);
-}
+  async gotoEditModal(record: any) {
+    const modalInstance = await this.m.create({
+      component: EditModalComponent,
+      componentProps: {
+        record,
+      },
+    });
+    modalInstance.present();
+  }
 
-EditRecord(record: any) {
-  record.isEdit = true;
-  record.EditName = record.Name;
-  record.EditPrice = record.Price;
-  record.EditAddress = record.Address;
-  record.EditNumBedSpace = record.NumBedSpace;
-  record.EditDetail = record.Detail;
-}
-
-UpdateRecord(recordRow: any) {
-  let record: any = {};
-  record['Name'] = recordRow.EditName;
-  record['Price'] = recordRow.EditPrice;
-  record['Address'] = recordRow.EditAddress;
-  record['NumBedSpace'] = recordRow.EditNumBedSpace;
-  record['Detail'] = recordRow.EditDetail;
-  this.firebaseService.update_room(recordRow.id, record);
-  recordRow.isEdit = false;
-}
-
+  closeModal() {
+    this.isModalOpen = false;
+    this.m.dismiss();
+  }
 }

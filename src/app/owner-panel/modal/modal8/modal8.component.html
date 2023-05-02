@@ -1,0 +1,36 @@
+<ion-content>
+  <h1>Upload your room images</h1>
+
+  <div class="form-group">
+    <label for="image-upload" style="font-size: 15px;">Choose Image</label>
+    <div class="image-upload-box">
+      <input type="file" id="image-upload" accept="image/*" class="d-none" (change)="onFileSelected($event)" multiple>
+      <label for="image-upload" class="plus-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
+          viewBox="0 0 16 16">
+          <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+        </svg>
+      </label>
+      <div class="image-preview" *ngIf="images.length > 0">
+        <div *ngFor="let image of images; let i = index" class="image-item">
+          <img [src]="image.url" alt="{{image.name}}" id="image-preview">
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <button class="modalbtnn" (click)="back()">
+    Back
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+    </svg>
+</button>
+  <button class="modalbtn" (click)="gotoModal9()">
+    Next
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+  </svg>
+</button>
+</ion-footer>

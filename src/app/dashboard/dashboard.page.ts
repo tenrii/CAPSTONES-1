@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from "../shared/authentication-service";
+import { AuthenticationService } from '../shared/authentication-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from '../services/firebase.service';
 import { Router } from '@angular/router';
 
-interface TenantData{
+interface TenantData {
   FName: string;
   LName: string;
   Age: number;
@@ -19,32 +19,35 @@ interface TenantData{
 export class DashboardPage implements OnInit {
   tenantForm!: FormGroup;
   tenantData: TenantData;
+  userData: any;
 
   constructor(
     private firebaseService: FirebaseService,
     public fb: FormBuilder,
     public authService: AuthenticationService,
-    public router: Router,
-  ) { this.tenantData = {} as TenantData;
-}
+    public router: Router
+  ) {
+    this.tenantData = {} as TenantData;
+  }
 
   ngOnInit() {
+    this.userData = JSON.parse(localStorage.getItem('user') || '{}')['email'];
     this.tenantForm = this.fb.group({
       FName: ['', [Validators.required]],
       LName: ['', [Validators.required]],
       Age: ['', [Validators.required]],
       Address: ['', [Validators.required]],
+      Email: this.userData,
     });
-
   }
-  addDetails(){
+  addDetails() {
     this.firebaseService
-    .create_tenant(this.tenantForm.value)
-    .then((res) => {
-      this.router.navigate(['login']);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .create_tenant(this.tenantForm.value)
+      .then((res) => {
+        this.router.navigate(['login']);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }

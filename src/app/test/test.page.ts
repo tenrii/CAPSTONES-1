@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { ImageService } from '../shared/chat';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+//import { ImageService } from '../shared/image-service';
 
 interface StudentData {
   Name: string;
@@ -26,10 +27,10 @@ export class TestPage implements OnInit {
   image: any;
 
   constructor(
+    private firestore: AngularFirestore,
     private af: AngularFireStorage,
     private firebaseService: FirebaseService,
-    public fb: FormBuilder,
-    private iS: ImageService,
+    public fb: FormBuilder //private iS: ImageService,
   ) {
     this.studentData = {} as StudentData;
   }
@@ -42,7 +43,6 @@ export class TestPage implements OnInit {
       Price: ['', [Validators.required]],
       Address: ['', [Validators.required]],
       Rent: ['', [Validators.required]],
-      Img: [] = this.imageName,
     });
 
     this.firebaseService.read_room().subscribe((data) => {
@@ -56,22 +56,27 @@ export class TestPage implements OnInit {
     console.log('pic', this.filePath);
   }
 
-  nameGenerator(n: number = 15){
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  nameGenerator(n: number = 15) {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     const charLength = characters.length;
-    for(let i = 0; i < n; i++){
+    for (let i = 0; i < n; i++) {
       result += characters.charAt(Math.floor(Math.random() * charLength));
     }
     return result;
   }
 
   CreateRecord() {
-    this.af.upload('images/' + this.imageName, this.filePath);
+    const img = this.af.upload('images/' + this.imageName, this.filePath);
     if (this.af !== null) {
       this.firebaseService
         .create_room(this.studentForm.value)
         .then((resp) => {
+          this.firestore
+            .collection('Room')
+            .doc(resp.id)
+            .update({ Image: this.imageName });
           //Reset form
           this.studentForm.reset();
         })

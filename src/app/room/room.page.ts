@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
-import { AngularFirestore} from '@angular/fire/compat/firestore';
-import { AuthenticationService } from "../shared/authentication-service";
-import firebase from 'firebase/compat/app';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthenticationService } from '../shared/authentication-service';
 import 'firebase/firestore';
-
+import { lastValueFrom } from 'rxjs';
 
 interface Seat {
   BedSpace: string;
   Occupied: boolean;
+  Occupant: string;
 }
 
 @Component({
@@ -23,6 +23,7 @@ export class RoomPage implements OnInit {
   roomId: any;
   rating: number = 0;
   collectionRoom = 'Room';
+  email = JSON.parse(localStorage.getItem('user') || '{}')['email'];
 
   seats: Seat[] = [];
 
@@ -31,74 +32,88 @@ export class RoomPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private firebaseService: FirebaseService,
-    private firestore: AngularFirestore,
+    private firestore: AngularFirestore
   ) {}
 
   ngOnInit() {
-    this.roomId = this.route.snapshot.paramMap.get('id');
+    this.load();
+  }
+
+  async load() {
+    if (!this.firebaseService.loading) {
+      this.firebaseService.read_room().subscribe(() => {
+        this.load();
+      });
+      return;
+    }
+
+    this.roomId =
+      this.route.snapshot.paramMap.get('id') ||
+      window.location.pathname.split('/')[2];
     console.log('id', this.firebaseService.getRoom(this.roomId));
     this.data = this.firebaseService.getRoom(this.roomId);
 
-    for (let i = 1; i <= this.data['NumBedSpace']; i++) {
-      this.seats.push({ BedSpace: 'B' + i, Occupied: false});
+    this.seats = [];
+    if (!this.data['BedSpaces']) {
+      for (let i = 1; i <= this.data['NumBedSpace']; i++) {
+        this.seats.push({ BedSpace: 'B' + i, Occupied: false , Occupant: ''});
+      }
+    } else {
+      const a = JSON.parse(this.data['BedSpaces']);
+      this.seats.push(...[...a]);
 
-      this.firestore.collection(this.collectionRoom).doc(this.roomId).get()
-      .subscribe(doc => {
+    }
+
+    console.log('c', this.email);
+  }
+
+  selectSeat(seat: Seat) {
+    if (!seat.Occupied) {
+      seat.Occupied = true;
+      seat.Occupant = this.email;
+    } else {
+      seat.Occupied = false;
+      seat.Occupant = '';
+    }
+  }
+
+  reserveBedspace() {
+    this.firestore
+      .collection(this.collectionRoom)
+      .doc(this.roomId)
+      .get()
+      .subscribe((doc) => {
         if (doc.exists) {
-          const user = doc.data() as { BedSpaces: any[] };
+          const user = doc.data() as { BedSpaces: any };
 
           // Modify the favorites array locally
-          user.BedSpaces.push(this.seats);
+          user.BedSpaces = this.seats;
+          const bs = JSON.stringify(user.BedSpaces);
 
           // Update the entire array back to Firestore
-          this.firestore.collection(this.collectionRoom).doc(this.roomId).update({ BedSpaces: user.BedSpaces })
+          this.firestore
+            .collection(this.collectionRoom)
+            .doc(this.roomId)
+            .update({ BedSpaces: bs })
             .then(() => {
               console.log('Favorites updated successfully!');
             })
-            .catch(error => {
+            .catch((error) => {
               console.error('Error updating favorites:', error);
             });
         } else {
           console.log('User document not found!');
         }
       });
-  }
-  console.log('a',this.seats);
-
+    console.log('a', this.seats);
   }
 
-  selectSeat(seat: Seat) {
-    if (!seat.Occupied) {
-      seat.Occupied = true;
-    }
-    else{
-      seat.Occupied = false;
-    }
-  }
+  bedSpaceEvent(){
+    for (let j = 1; j <= this.data['NumBedSpace']; j++){
+      if(this.seats[j].Occupant != null){
 
-  reserveBedspace(){
-
-    this.firestore.collection(this.collectionRoom).doc(this.roomId).get()
-    .subscribe(doc => {
-      if (doc.exists) {
-        const user = doc.data() as { BedSpaces: any[] };
-
-        // Modify the favorites array locally
-        user.BedSpaces.push(this.seats);
-
-        // Update the entire array back to Firestore
-        this.firestore.collection(this.collectionRoom).doc(this.roomId).update({ BedSpaces: user.BedSpaces })
-          .then(() => {
-            console.log('Favorites updated successfully!');
-          })
-          .catch(error => {
-            console.error('Error updating favorites:', error);
-          });
-      } else {
-        console.log('User document not found!');
       }
-    });
-    console.log('a',this.seats);
+    }
   }
 
   starIcon(index: number): string {
@@ -112,6 +127,4 @@ export class RoomPage implements OnInit {
   setRating(index: number): void {
     this.rating = index;
   }
-
 }
-

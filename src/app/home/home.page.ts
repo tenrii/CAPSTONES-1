@@ -3,7 +3,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthenticationService } from "../shared/authentication-service";
+import { AuthenticationService } from '../shared/authentication-service';
 
 interface RoomData {
   Id: any;
@@ -18,16 +18,15 @@ interface RoomData {
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-
 export class HomePage implements OnInit {
   roomList: any[] = [];
+  emailList: any[] = [];
   roomData!: RoomData;
-  userProfileData: any;
   list: any = new BehaviorSubject([]);
   listEmail: any = new BehaviorSubject([]);
   filterPlace: any;
   filterRent: any;
-  address: any;
+  barangay: any;
   rent: any;
   price: any = { lower: 0, upper: 5000 };
   priceMax: any = 0;
@@ -38,12 +37,11 @@ export class HomePage implements OnInit {
     speed: 400,
     loop: true,
     autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-    }
+      delay: 4000,
+      disableOnInteraction: false,
+    },
   };
-  email = JSON.parse(localStorage.getItem('user') || '{}' )['email'];
-
+  email = JSON.parse(localStorage.getItem('user') || '{}')['email'];
 
   constructor(
     public authService: AuthenticationService,
@@ -58,7 +56,7 @@ export class HomePage implements OnInit {
     this.firebaseService.read_room().subscribe((data) => {
       this.roomList = data;
 
-      this.filterPlace = [...new Set(this.roomList.map((a) => a.Address))];
+      this.filterPlace = [...new Set(this.roomList.map((a) => a.Barangay))];
       this.filterRent = [...new Set(this.roomList.map((a) => a.Rent))];
 
       const sorted = this.roomList.sort((a: any, b: any) => {
@@ -70,46 +68,44 @@ export class HomePage implements OnInit {
       this.price.upper = this.priceMax;
 
       this.filter();
+      console.log('a', this.list);
     });
 
-    this.firebaseService.read_room().subscribe((data) => {
-      this.roomList = data;
-      console.log('owner list', this.roomList);
+    this.firebaseService.read_owner().subscribe((data) => {
+      this.emailList = data;
       this.filterEmail();
+      console.log('b', this.listEmail);
     });
-    console.log('e',this.filterEmail());
-    console.log('datas', this.email);
   }
 
-  getAd(address: any) {
+  getAd(barangay: any) {
     return this.filter();
   }
+
   getRe(rent: any) {
     return this.filter();
+  }
+
+  filterPrice() {
+    this.filter();
   }
 
   filter() {
     const filteredList = this.roomList.filter((obj) => {
       return (
-        (!this.address || this.address === obj.Address) &&
-          (!this.rent || this.rent === obj.Rent) &&
-          (this.price.upper >= obj.Price &&
-          this.price.lower <= obj.Price)
+        (!this.barangay || this.barangay === obj.Barangay) &&
+        (!this.rent || this.rent === obj.Rent) &&
+        this.price.upper >= obj.Price &&
+        this.price.lower <= obj.Price
       );
     });
     this.list.next(filteredList);
   }
 
   filterEmail() {
-    const filteredEList = this.roomList.filter((a) => {
-      return (
-        (!this.address || this.email === a.Email)
-      );
+    const filteredEList = this.emailList.filter((a) => {
+      return this.email === a.Email;
     });
     this.listEmail.next(filteredEList);
-  }
-
-  filterPrice() {
-    this.filter();
   }
 }
